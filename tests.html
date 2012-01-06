@@ -1,0 +1,29 @@
+<html>
+<head>
+  <script src='flapjax/flapjax-impl.js'></script>
+  <script src='flapjax-world.js'></script>
+</head>
+
+<body>
+
+<div id='timer'></div>
+
+</body>
+  <script>
+    var on_tick = timerB(1000).changes();
+    var on_click = clicksE('timer');
+
+    var w1 = world(
+      0,
+      [
+        [on_tick, function(w, t) { return t; }],
+        [on_click, function(w, _) { return 'clicked!'; }],
+      ],
+      { draw: P }
+    );
+
+    insertDomB(w1.draw, getObj('timer'), 'end');
+  </script>
+
+</html>
+
