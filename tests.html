@@ -13,16 +13,16 @@
     var on_tick = timerB(1000).changes();
     var on_click = clicksE('timer');
 
-    var w1 = world(
+    var w = world(
       0,
       [
         [on_tick, function(w, _) { return w + 1; }],
         [on_click, function(w, _) { return 0; }],
-      ],
-      { draw: P }
+      ]
     );
+    var to_draw = w.liftB(P);
 
-    insertDomB(w1.draw, getObj('timer'), 'end');
+    insertDomB(to_draw, getObj('timer'), 'end');
   </script>
 
 </html>
