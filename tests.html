@@ -15,15 +15,12 @@
 
     var w = world(
       0,
-      [
-        [on_tick, function(w, _) { return w + 1; }],
-        [on_click, function(w, _) { return 0; }],
-      ]
+      [ [on_tick, function(w, _) { return w + 1; }],
+        [on_click, function(w, _) { return 0; }] ]
     );
     var to_draw = w.liftB(P);
 
     insertDomB(to_draw, getObj('timer'), 'end');
   </script>
-
 </html>
 
