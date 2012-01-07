@@ -16,8 +16,8 @@
     var w1 = world(
       0,
       [
-        [on_tick, function(w, t) { return t; }],
-        [on_click, function(w, _) { return 'clicked!'; }],
+        [on_tick, function(w, _) { return w + 1; }],
+        [on_click, function(w, _) { return 0; }],
       ],
       { draw: P }
     );

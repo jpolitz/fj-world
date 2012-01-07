@@ -1,12 +1,16 @@
 function world(init, handlers, facets) {
-  
-  var worldChangedE = receiverE();
-  var worldValueB = worldChangedE.startsWith(init);
-  var handlerEvents = handlers.map(function(handler) {
-    return handler[0].mapE(function(v) {
-      worldChangedE.sendEvent(handler[1](worldValueB.valueNow(), v));
-    });
-  });
+  var handlerEvents = mergeE.apply(null,
+    handlers.map(function(handler) {
+      return handler[0].mapE(function(eventValue) {
+        return function(world) { return handler[1](world, eventValue); };
+      });
+    })
+  );
+
+  var worldValueB = handlerEvents.collectE(
+    init,
+    function(handler, world) { return handler(world); }
+  ).startsWith(init);
 
   var worldFacets = {};
   Object.keys(facets).forEach(function(k) {
