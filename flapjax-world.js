@@ -1,17 +1,17 @@
-function world(init, handlers) 
-/*: ∀ a . a * Array<∃ b . {0: EventStream<b>, 1: a * b -> a}> -> Behavior a */
+function worldB(init, handlers) 
+/*: ∀ α . α * Array<∃ β . {0: EventStream<β>, 1: α * β -> α}> -> Behavior<α> */
 {
   return mergeE.apply(zeroE,
     handlers.map(function(handler)
-    /*: ∃ b . {0: EventStream<b>, 1: a * b -> a} -> EventStream<a -> a> */
+    /*: ∃ β . {0: EventStream<β>, 1: α * β -> α} -> EventStream<α -> α> */
     {
-      return handler[0].mapE(function(eventValue) /*: b -> (a -> a) */ {
-        return function(world) /*: a -> a */ {
+      return handler[0].mapE(function(eventValue) /*: β -> (α -> α) */ {
+        return function(world) /*: α -> α */ {
           return handler[1](world, eventValue);
         };
       });
     }))
-   .collectE(init, function(handler, world) /*: (a -> a) * a -> a */ {
+   .collectE(init, function(handler, world) /*: (α -> α) * α -> α */ {
       return handler(world);
     })
    .startsWith(init);

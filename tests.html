@@ -1,5 +1,7 @@
+
 <html>
 <head>
+  <meta charset="utf-8">
   <script src='flapjax/flapjax-impl.js'></script>
   <script src='flapjax-world.js'></script>
 </head>
@@ -13,7 +15,7 @@
     var on_tick = timerB(1000).changes();
     var on_click = clicksE('timer');
 
-    var w = world(
+    var w = worldB(
       0,
       [ [on_tick, function(w, _) { return w + 1; }],
         [on_click, function(w, _) { return 0; }] ]
