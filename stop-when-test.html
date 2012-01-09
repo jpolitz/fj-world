@@ -1,0 +1,43 @@
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src='flapjax/flapjax-impl.js'></script>
+  <script src='flapjax-world.js'></script>
+</head>
+
+<body>
+
+<div id='timer'></div>
+
+</body>
+  <script>
+    var on_tick = timerB(1000).changes();
+    var on_click = clicksE('timer');
+
+    var w = worldB(
+      0,
+      [ [on_tick, function(w, _) { return w + 1; }],
+        [on_click, function(w, _) { return 0; }] ]
+    );
+    var stopWhen = function(v) { return v > 3; }
+    var stopped = w.changes().collectE({state: 'init'}, function(wValue, acc) {
+      switch(acc.state) {
+        case 'init':
+          return {state: 'run', value: wValue};
+        case 'stopnext':
+        case 'stop':
+          return {state: 'stop', value: acc.value};
+        case 'run':
+          return {state: stopWhen(wValue) ? 'stopnext' : 'run', value: wValue};
+      }
+    })
+   .filterE(function(v) { return v.state === 'run' || v.state === 'stopnext'; })
+   .mapE(function(v) { return v.value; }).startsWith(0);
+
+    var to_draw = stopped.liftB(P);
+
+    insertDomB(to_draw, getObj('timer'), 'end');
+  </script>
+</html>
+
