@@ -21,15 +21,13 @@
         [on_click, function(w, _) { return 0; }] ]
     );
     var stopWhen = function(v) { return v > 3; }
-    var stopped = w.changes().collectE({state: 'init'}, function(wValue, acc) {
+    var stopped = w.changes().collectE({state: 'run'}, function(wValue, acc) {
       switch(acc.state) {
-        case 'init':
-          return {state: 'run', value: wValue};
+        case 'run':
+          return {state: stopWhen(wValue) ? 'stopnext' : 'run', value: wValue};
         case 'stopnext':
         case 'stop':
           return {state: 'stop', value: acc.value};
-        case 'run':
-          return {state: stopWhen(wValue) ? 'stopnext' : 'run', value: wValue};
       }
     })
    .filterE(function(v) { return v.state === 'run' || v.state === 'stopnext'; })
